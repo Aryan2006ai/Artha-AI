@@ -1,85 +1,126 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Artha AI  Finance Chat Assistant</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Artha AI</title>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;600&family=DM+Mono&display=swap" rel="stylesheet">
+
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:#0d1b2e; --card:#162a4a; --border:#1e3a5f;
+  --accent:#3b82f6; --green:#22c55e; --text:#e2e8f0;
+}
+body{margin:0;font-family:'DM Sans';background:var(--bg);color:var(--text)}
+.main{display:flex;gap:20px;padding:20px}
 
-  :root {
-    --bg:        #0d1b2e;
-    --surface:   #112240;
-    --card:      #162a4a;
-    --border:    #1e3a5f;
-    --accent:    #3b82f6;
-    --accent2:   #22d3ee;
-    --green:     #22c55e;
-    --text:      #e2e8f0;
-    --muted:     #7a9bb5;
-    --bubble-ai: #1a3358;
-    --bubble-u:  #1d4ed8;
-    --slider-track: linear-gradient(to right, var(--accent), #f59e0b);
-  }
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
+/* CHAT */
+.chat{flex:1;background:var(--card);border-radius:12px;display:flex;flex-direction:column}
+.messages{flex:1;padding:20px;overflow:auto}
+.msg{margin-bottom:10px}
+.user{text-align:right}
+.bubble{display:inline-block;padding:10px 14px;border-radius:10px}
+.user .bubble{background:var(--accent)}
+.ai .bubble{background:#1a3358}
+.input{display:flex;border-top:1px solid var(--border)}
+input{flex:1;padding:12px;background:transparent;border:none;color:white}
+button{background:var(--accent);border:none;color:white;padding:12px}
 
-  /* ── NAVBAR ── */
-  nav {
-    background: #0a1628;
-    border-bottom: 1px solid var(--border);
-    padding: 0 28px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky; top: 0; z-index: 100;
-  }
-  .nav-brand { display: flex; align-items: center; gap: 12px; }
-  .nav-logo {
-    width: 38px; height: 38px; border-radius: 10px;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px; font-weight: 700; color: #fff;
-  }
-  .nav-title { font-size: 17px; font-weight: 700; }
-  .nav-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
-  .nav-right { display: flex; align-items: center; gap: 12px; }
-  .mode-label { font-size: 13px; color: var(--muted); }
-  .mode-select {
-    background: var(--card); border: 1px solid var(--border);
-    color: var(--text); font-family: inherit; font-size: 13px;
-    padding: 6px 12px; border-radius: 8px; cursor: pointer; outline: none;
-  }
-  .mode-btn {
-    background: var(--accent); color: #fff;
-    border: none; padding: 7px 18px; border-radius: 8px;
-    font-size: 13px; font-weight: 600; cursor: pointer;
-    transition: background .2s;
-  }
-  .mode-btn:hover { background: #2563eb; }
+/* CALC */
+.calc{width:300px;background:var(--card);padding:20px;border-radius:12px}
+h3{margin-top:0}
+input[type=range]{width:100%}
+.result{font-size:20px;margin-top:10px}
+</style>
+</head>
 
-  /* ── LAYOUT ── */
-  .main { display: flex; flex: 1; gap: 20px; padding: 20px 24px; max-width: 1300px; width: 100%; margin: 0 auto; }
+<body>
 
-  /* ── CHAT PANEL ── */
-  .chat-panel {
-    flex: 1; background: var(--surface); border: 1px solid var(--border);
-    border-radius: 16px; display: flex; flex-direction: column; overflow: hidden;
-  }
-  .chat-header {
-    padding: 16px 20px; border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .chat-header-left { display: flex; align-items: center; gap: 12px; }
-  .chat-avatar {
+<div class="main">
+
+<!-- CHAT -->
+<div class="chat">
+<div class="messages" id="messages">
+  <div class="msg ai"><div class="bubble">Hi! I'm Artha AI. Ask me about SIP, PPF, or finance.</div></div>
+</div>
+
+<div class="input">
+  <input id="userInput" placeholder="Ask something..." onkeydown="if(event.key==='Enter')sendMessage()">
+  <button onclick="sendMessage()">➤</button>
+</div>
+</div>
+
+<!-- CALCULATOR -->
+<div class="calc">
+<h3>SIP Calculator</h3>
+
+<label>Monthly ₹</label>
+<input type="number" id="monthly" value="5000" oninput="calc()">
+
+<label>Interest %</label>
+<input type="number" id="rate" value="7.1" oninput="calc()">
+
+<label>Years</label>
+<input type="number" id="years" value="15" oninput="calc()">
+
+<div class="result" id="result">₹0</div>
+</div>
+
+</div>
+
+<script>
+
+/* CHAT BOT */
+function getReply(msg){
+  msg=msg.toLowerCase();
+
+  if(msg.includes('sip')) return "SIP lets you invest monthly in mutual funds.";
+  if(msg.includes('ppf')) return "PPF is a safe 15-year government investment.";
+  if(msg.includes('elss')) return "ELSS gives tax benefits under 80C.";
+  if(msg.includes('nps')) return "NPS helps in retirement savings.";
+
+  return "I can help with SIP, PPF, ELSS, and finance basics.";
+}
+
+function sendMessage(){
+  let input=document.getElementById('userInput');
+  let text=input.value.trim();
+  if(!text) return;
+
+  addMsg('user',text);
+  input.value="";
+
+  setTimeout(()=>{
+    let reply=getReply(text);
+    addMsg('ai',reply);
+  },500);
+}
+
+function addMsg(type,text){
+  let div=document.createElement('div');
+  div.className='msg '+type;
+  div.innerHTML=`<div class="bubble">${text}</div>`;
+  document.getElementById('messages').appendChild(div);
+}
+
+/* SIP CALCULATOR */
+function calc(){
+  let P=document.getElementById('monthly').value;
+  let r=document.getElementById('rate').value/100/12;
+  let n=document.getElementById('years').value*12;
+
+  let M=P*((Math.pow(1+r,n)-1)/r)*(1+r);
+  document.getElementById('result').innerText="₹"+Math.round(M);
+}
+calc();
+
+</script>
+
+</body>
+</html>
+```
     width: 36px; height: 36px; border-radius: 50%;
     background: linear-gradient(135deg, var(--accent), var(--accent2));
     display: flex; align-items: center; justify-content: center; font-size: 15px;
