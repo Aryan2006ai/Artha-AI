@@ -2,6 +2,13 @@ const chatBox = document.getElementById('chat-box');
 const userInput = document.getElementById('user-input');
 const sendBtn = document.getElementById('send-btn');
 
+const ppfContainer = document.getElementById('ppf-calculator');
+const principalInput = document.getElementById('principal');
+const interestInput = document.getElementById('interest');
+const yearsInput = document.getElementById('years');
+const calculateBtn = document.getElementById('calculate-ppf');
+const ppfResult = document.getElementById('ppf-result');
+
 sendBtn.addEventListener('click', sendMessage);
 userInput.addEventListener('keypress', function(e) {
   if (e.key === 'Enter') {
@@ -9,12 +16,38 @@ userInput.addEventListener('keypress', function(e) {
   }
 });
 
+calculateBtn.addEventListener('click', function() {
+  const principal = parseFloat(principalInput.value);
+  const interest = parseFloat(interestInput.value) / 100;
+  const years = parseInt(yearsInput.value);
+  if (isNaN(principal) || isNaN(interest) || isNaN(years)) {
+    ppfResult.innerText = 'Please enter valid values.';
+    return;
+  }
+  const maturityAmount = calculatePPF(principal, interest, years);
+  ppfResult.innerText = `Maturity Amount after ${years} years: ₹${maturityAmount.toFixed(2)}`;
+});
+
+function calculatePPF(principal, interest, years) {
+  // Compound interest formula: A = P * (1 + r)^n
+  return principal * Math.pow(1 + interest, years);
+}
+
 function sendMessage() {
   const message = userInput.value.trim();
   if (message === '') return;
 
   addMessage(message, 'user');
   userInput.value = '';
+
+  // Show PPF calculator if user asks for it
+  if (message.toLowerCase().includes('ppf calculator') || message.toLowerCase().includes('ppf')) {
+    ppfContainer.style.display = 'block';
+    addMessage('Please enter the principal, interest rate, and years to calculate PPF maturity amount.', 'bot');
+    return;
+  } else {
+    ppfContainer.style.display = 'none';
+  }
 
   const response = getResponse(message);
   addMessage(response, 'bot');
@@ -81,6 +114,23 @@ function getResponse(message) {
   } 
   else if (msg.includes('what is mutual fund')) {
     return 'A mutual fund pools money from investors to invest in stocks, bonds, or other assets.';
+  } 
+  else if (msg.includes('what is banking')) {
+    return 'Banking involves managing money through institutions like deposits, loans, and payments.';
+  } 
+  else if (msg.includes('what is entrepreneurship')) {
+    return 'Entrepreneurship is the process of starting and running a business.';
+  } 
+  else if (msg.includes('what is marketing')) {
+    return 'Marketing is the activity of promoting and selling products or services.';
+  } 
+  else if (msg.includes('bye')) {
+    return 'Goodbye! Have a great day!';
+  } 
+  else {
+    return "I'm not sure how to respond to that. Try asking about finance, AI, or technology!";
+  }
+}    return 'A mutual fund pools money from investors to invest in stocks, bonds, or other assets.';
   } 
   else if (msg.includes('what is banking')) {
     return 'Banking involves managing money through institutions like deposits, loans, and payments.';
