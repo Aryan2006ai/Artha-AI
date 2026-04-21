@@ -1,28 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Artha AI Chatbot with PPF Calculator</title>
-  <link rel="stylesheet" href="styles.css" />
+    <title>Artha AI</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="chat-container">
-    <h2>Artha AI Chatbot</h2>
-    <div id="chat-box" class="chat-box"></div>
-    <div class="input-area">
-      <input type="text" id="user-input" placeholder="Type your message..." />
-      <button id="send-btn">Send</button>
-    </div>
-    <div id="ppf-calculator" class="ppf-calculator" style="display:none;">
-      <h3>PPF Calculator</h3>
-      <label>Principal Amount: <input type="number" id="principal" /></label><br/>
-      <label>Interest Rate (% per annum): <input type="number" id="interest" step="0.01" /></label><br/>
-      <label>Number of Years: <input type="number" id="years" /></label><br/>
-      <button id="calculate-ppf">Calculate</button>
-      <div id="ppf-result" style="margin-top:10px; font-weight:bold;"></div>
-    </div>
-  </div>
-  <script src="script.js"></script>
+
+<h1>Artha AI - Finance Chatbot</h1>
+
+<div id="chatbox"></div>
+
+<input id="input" placeholder="Ask something...">
+<button onclick="sendMessage()">Send</button>
+
+<script src="script.js"></script>
 </body>
 </html>
