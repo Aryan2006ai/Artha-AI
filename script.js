@@ -1,6 +1,4 @@
 function sendMessage() {
-    console.log("clicked");
-
     const input = document.getElementById("user-input");
     const chatBox = document.querySelector(".chat-box");
 
@@ -8,13 +6,13 @@ function sendMessage() {
 
     if (!userText) return;
 
-    // USER MESSAGE
+    // User message
     const userMsg = document.createElement("div");
     userMsg.className = "message user";
     userMsg.innerText = userText;
     chatBox.appendChild(userMsg);
 
-    // BOT LOGIC
+    // Bot logic
     let reply = "I didn’t understand that.";
 
     if (userText.toLowerCase().includes("sip")) {
@@ -23,7 +21,7 @@ function sendMessage() {
         reply = "PPF is a government savings scheme.";
     }
 
-    // BOT MESSAGE
+    // Bot reply
     const botMsg = document.createElement("div");
     botMsg.className = "message bot";
     botMsg.innerText = reply;
