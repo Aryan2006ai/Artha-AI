@@ -1,3 +1,4 @@
+// Chat Function
 async function sendMessage() {
     const input = document.getElementById("user-input");
     const chatBox = document.querySelector(".chat-box");
@@ -29,8 +30,17 @@ async function sendMessage() {
 
     input.value = "";
     chatBox.scrollTop = chatBox.scrollHeight;
-}  } 
-  else {
-    return "I'm not sure how to respond to that. Try asking about finance, AI, or technology!";
-  }
+}
+
+
+//  PPF Calculator Function (ADD HERE - SEPARATE)
+function calculatePPF() {
+    const amount = document.getElementById("amount").value;
+    const rate = document.getElementById("rate").value / 100;
+    const years = document.getElementById("years").value;
+
+    const result = amount * Math.pow((1 + rate), years);
+
+    document.getElementById("result").innerText =
+        "Total Value: ₹" + result.toFixed(2);
 }
