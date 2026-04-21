@@ -1,6 +1,6 @@
 async function sendMessage() {
     const input = document.getElementById("user-input");
-    const chatBox = document.querySelector(".chat-box");
+    console.log("clicked");
 
     const userText = input.value.toLowerCase();
 
