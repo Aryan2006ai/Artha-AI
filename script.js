@@ -12,7 +12,7 @@ async function sendMessage() {
     userMsg.innerText = userText;
     chatBox.appendChild(userMsg);
 
-    // 🔥 LOCAL RESPONSE (NO SERVER)
+    // LOCAL RESPONSE (NO SERVER)
     let reply = "Sorry, I didn’t understand that.";
 
     if (userText.includes("sip")) {
