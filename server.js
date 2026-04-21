@@ -2,20 +2,21 @@ const express = require('express');
 const app = express();
 
 app.use(express.json());
-app.use(express.static('public'));
+app.use(express.static(__dirname)); // serve index.html
 
-// Chat API
 app.post('/chat', (req, res) => {
     const msg = req.body.message.toLowerCase();
 
-    let reply = "Sorry, I don't understand.";
+    let reply = "Sorry, I didn’t understand that.";
 
-    if (msg.includes("sip")) {
-        reply = "SIP is a Systematic Investment Plan.";
+    if (msg.includes("hello")) {
+        reply = "Hello! I am Artha AI 💰";
+    } else if (msg.includes("sip")) {
+        reply = "SIP is a Systematic Investment Plan where you invest regularly.";
     } else if (msg.includes("ppf")) {
-        reply = "PPF is a long-term government-backed savings scheme.";
-    } else if (msg.includes("hello")) {
-        reply = "Hello! I am Artha AI. Ask me anything about finance.";
+        reply = "PPF is a government-backed savings scheme with long-term returns.";
+    } else if (msg.includes("investment")) {
+        reply = "Investing helps grow your money over time.";
     }
 
     res.json({ reply });
