@@ -1,86 +1,23 @@
-const chatBox = document.getElementById('chat-box');
-const userInput = document.getElementById('user-input');
-const sendBtn = document.getElementById('send-btn');
+async function sendMessage() {
+    const input = document.getElementById("input");
+    const chatbox = document.getElementById("chatbox");
 
-const ppfContainer = document.getElementById('ppf-calculator');
-const principalInput = document.getElementById('principal');
-const interestInput = document.getElementById('interest');
-const yearsInput = document.getElementById('years');
-const calculateBtn = document.getElementById('calculate-ppf');
-const ppfResult = document.getElementById('ppf-result');
+    const userMsg = input.value;
 
-sendBtn.addEventListener('click', sendMessage);
-userInput.addEventListener('keypress', function(e) {
-  if (e.key === 'Enter') {
-    sendMessage();
-  }
-});
+    chatbox.innerHTML += "<p><b>You:</b> " + userMsg + "</p>";
 
-calculateBtn.addEventListener('click', function() {
-  const principal = parseFloat(principalInput.value);
-  const interest = parseFloat(interestInput.value) / 100;
-  const years = parseInt(yearsInput.value);
-  if (isNaN(principal) || isNaN(interest) || isNaN(years)) {
-    ppfResult.innerText = 'Please enter valid values.';
-    return;
-  }
-  const maturityAmount = calculatePPF(principal, interest, years);
-  ppfResult.innerText = `Maturity Amount after ${years} years: ₹${maturityAmount.toFixed(2)}`;
-});
+    const res = await fetch('/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: userMsg })
+    });
 
-function calculatePPF(principal, interest, years) {
-  // Compound interest formula: A = P * (1 + r)^n
-  return principal * Math.pow(1 + interest, years);
-}
+    const data = await res.json();
 
-function sendMessage() {
-  const message = userInput.value.trim();
-  if (message === '') return;
+    chatbox.innerHTML += "<p><b>Artha AI:</b> " + data.reply + "</p>";
 
-  addMessage(message, 'user');
-  userInput.value = '';
-
-  // Show PPF calculator if user asks for it
-  if (message.toLowerCase().includes('ppf calculator') || message.toLowerCase().includes('ppf')) {
-    ppfContainer.style.display = 'block';
-    addMessage('Please enter the principal, interest rate, and years to calculate PPF maturity amount.', 'bot');
-    return;
-  } else {
-    ppfContainer.style.display = 'none';
-  }
-
-  const response = getResponse(message);
-  addMessage(response, 'bot');
-}
-
-function addMessage(message, sender) {
-  const messageDiv = document.createElement('div');
-  messageDiv.className = `message ${sender}`;
-  messageDiv.innerText = message;
-  chatBox.appendChild(messageDiv);
-  chatBox.scrollTop = chatBox.scrollHeight;
-}
-
-function getResponse(message) {
-  const msg = message.toLowerCase();
-
-  if (msg.includes('hello') || msg.includes('hi')) {
-    return 'Hello! I am Artha AI. How can I assist you today?';
-  } 
-  else if (msg.includes('how are you')) {
-    return 'I am functioning perfectly and ready to help!';
-  } 
-  else if (msg.includes('what is ppf')) {
-    return 'PPF (Public Provident Fund) is a long-term savings scheme backed by the Government of India with tax benefits.';
-  } 
-  else if (msg.includes('what is gdp')) {
-    return 'GDP (Gross Domestic Product) is the total value of goods and services produced in a country.';
-  } 
-  else if (msg.includes('what is inflation')) {
-    return 'Inflation is the rate at which the general level of prices for goods and services rises.';
-  } 
-  else if (msg.includes('what is ai')) {
-    return 'AI stands for Artificial Intelligence, which enables machines to mimic human intelligence.';
+    input.value = "";
+}    return 'AI stands for Artificial Intelligence, which enables machines to mimic human intelligence.';
   } 
   else if (msg.includes('what is machine learning')) {
     return 'Machine Learning is a subset of AI that allows systems to learn from data and improve automatically.';
